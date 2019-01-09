@@ -2,15 +2,10 @@ package com.haier.demo.testflippablestackview;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
-import com.haier.demo.testflippablestackview.helper.FlippableStackView;
-import com.haier.demo.testflippablestackview.helper.StackPageTransformer;
-import com.haier.demo.testflippablestackview.helper.ValueInterpolator;
+import com.haier.demo.testflippablestackview.helper.viewpagerhelper.FlippableStackView;
+import com.haier.demo.testflippablestackview.helper.viewpagerhelper.StackPageTransformer;
 
 import java.util.ArrayList;
 import java.util.List;

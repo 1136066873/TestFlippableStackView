@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package com.haier.demo.testflippablestackview.helper;
+package com.haier.demo.testflippablestackview.helper.viewpagerhelper;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-
-import com.haier.demo.testflippablestackview.helper.ValueInterpolator;
 
 /**
  * Created by Bartosz Lipinski

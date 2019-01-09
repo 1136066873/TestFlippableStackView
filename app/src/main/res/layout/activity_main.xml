@@ -16,7 +16,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary">
 
-        <com.haier.demo.testflippablestackview.helper.FlippableStackView
+        <com.haier.demo.testflippablestackview.helper.viewpagerhelper.FlippableStackView
             android:id="@+id/flippable_stack_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

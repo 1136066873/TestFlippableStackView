@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.haier.demo.testflippablestackview.helper;
+package com.haier.demo.testflippablestackview.helper.viewpagerhelper;
 
 import android.content.Context;
 import android.content.res.Resources;
