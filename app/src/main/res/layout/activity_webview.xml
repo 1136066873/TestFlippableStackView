@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+
+        <LinearLayout
+            android:layout_width="400dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:background="@drawable/shape_corner_top"/>
+
+
+        <RelativeLayout
+            android:layout_width="400dp"
+            android:layout_height="250dp"
+            android:orientation="vertical"
+            android:background="@drawable/shape_corner">
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </WebView>
+
+            <ProgressBar
+                android:id="@+id/web_view_progress_bar"
+                style="@style/customProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_alignParentTop="true"
+                android:max="100"/>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="400dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+
+
+            android:background="@drawable/shape_corner_bottom">
+
+            <!--            android:background="@color/gray_ef"-->
+
+            <ImageView
+                android:id="@+id/iv_close_webview"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/close"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

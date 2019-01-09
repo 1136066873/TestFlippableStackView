@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="bottom"
     android:background="@color/green_dark"
     tools:context="com.haier.demo.testflippablestackview.MainActivity">
 
-    <com.haier.demo.testflippablestackview.helper.FlippableStackView
-        android:id="@+id/flippable_stack_view"
+    <RelativeLayout
         android:layout_width="280dp"
         android:layout_height="160dp"
-        android:background="@color/colorPrimary" />
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary">
 
-</LinearLayout>
+        <com.haier.demo.testflippablestackview.helper.FlippableStackView
+            android:id="@+id/flippable_stack_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="-13dp"
+            android:background="@color/wisteria" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

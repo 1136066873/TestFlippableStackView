@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_layout"
+<com.haier.demo.testflippablestackview.helper.imageviewhelper.RCImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fragment_background" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:round_corner_top_left="16dp"
+    app:round_corner_top_right="16dp"
+
+
+    android:id="@+id/card_iv"
+    android:scaleType="fitXY"
+    android:src="@mipmap/pic9"/>
+<!--    android:paddingBottom="@dimen/bottom_margin"
+    android:paddingLeft="@dimen/left_margin"
+    android:paddingRight="@dimen/right_margin"
+    android:paddingTop="@dimen/top_margin"-->
