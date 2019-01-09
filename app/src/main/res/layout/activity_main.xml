@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green_dark"
+    android:background="@color/translucent_background"
     tools:context="com.haier.demo.testflippablestackview.MainActivity">
 
     <RelativeLayout
@@ -14,14 +14,14 @@
         android:layout_marginBottom="20dp"
         android:layout_marginStart="20dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary">
+        ><!--android:background="@color/colorPrimary"-->
 
         <com.haier.demo.testflippablestackview.helper.viewpagerhelper.FlippableStackView
             android:id="@+id/flippable_stack_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="-13dp"
-            android:background="@color/wisteria" />
+            /><!--android:background="@color/wisteria" -->
     </RelativeLayout>
 
 
