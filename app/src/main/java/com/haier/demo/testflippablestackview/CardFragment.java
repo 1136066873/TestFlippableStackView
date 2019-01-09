@@ -68,7 +68,7 @@ public class CardFragment extends Fragment {
                     Intent intent = new Intent();
                     intent.setClass(getContext(), WebViewActivity.class);
                     intent.putExtra(CURRENT_BANNER_ADVERTISING_LINK,bundle.getString(CURRENT_BANNER_ADVERTISING_LINK));
-                    //startActivity(intent);
+                    startActivity(intent);
                 }
             }
         });
