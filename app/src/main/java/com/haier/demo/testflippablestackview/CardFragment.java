@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.haier.demo.testflippablestackview.helper.imageviewhelper.RCImageView;
@@ -56,11 +57,13 @@ public class CardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_dummy, container, false);
         ImageView cardIv = v.findViewById(R.id.card_iv);
+        TextView tv_index = v.findViewById(R.id.tv_index);
         final Bundle bundle = getArguments();
         if (bundle != null && (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_URL)))&&
                 (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK))) &&
                 (!TextUtils.isEmpty("" + bundle.getInt(INDEX_KEY, 0)))) {
             cardIv.setImageResource(Constant.bannerList[bundle.getInt(INDEX_KEY, 0) -1]);
+            tv_index.setText("" + bundle.getInt(INDEX_KEY, 0));
             //Picasso.with(getActivity()).load(bundle.getString(CURRENT_BANNER_URL)).into(cardIv);
         }
         cardIv.setOnClickListener(new View.OnClickListener() {
