@@ -59,14 +59,14 @@ public class CardFragment extends Fragment {
         final Bundle bundle = getArguments();
         if (bundle != null && (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_URL)))&&
                 (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK)))) {
-            Picasso.with(getActivity()).load(bundle.getString(CURRENT_BANNER_URL)).into(cardIv);
+            //Picasso.with(getActivity()).load(bundle.getString(CURRENT_BANNER_URL)).into(cardIv);
         }
         cardIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (bundle != null && (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK)))){
                     Intent intent = new Intent();
-                    intent.setClass(getContext(), WebViewActivity.class);
+                    intent.setClass(getContext(), ADActivity.class);
                     intent.putExtra(CURRENT_BANNER_ADVERTISING_LINK,bundle.getString(CURRENT_BANNER_ADVERTISING_LINK));
                     startActivity(intent);
                 }

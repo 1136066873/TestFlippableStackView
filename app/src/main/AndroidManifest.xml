@@ -34,6 +34,13 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme"/>
+
+        <activity android:name=".ADActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
