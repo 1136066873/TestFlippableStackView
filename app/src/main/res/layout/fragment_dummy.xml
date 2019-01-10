@@ -11,7 +11,8 @@
 
     android:id="@+id/card_iv"
     android:scaleType="fitXY"
-    android:src="@mipmap/pic9"/>
+/>
+<!--    android:src="@mipmap/pic9"-->
 <!--    android:paddingBottom="@dimen/bottom_margin"
     android:paddingLeft="@dimen/left_margin"
     android:paddingRight="@dimen/right_margin"

@@ -58,16 +58,20 @@ public class CardFragment extends Fragment {
         ImageView cardIv = v.findViewById(R.id.card_iv);
         final Bundle bundle = getArguments();
         if (bundle != null && (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_URL)))&&
-                (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK)))) {
+                (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK))) &&
+                (!TextUtils.isEmpty("" + bundle.getInt(INDEX_KEY, 0)))) {
+            cardIv.setImageResource(Constant.bannerList[bundle.getInt(INDEX_KEY, 0) -1]);
             //Picasso.with(getActivity()).load(bundle.getString(CURRENT_BANNER_URL)).into(cardIv);
         }
         cardIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bundle != null && (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK)))){
+                if (bundle != null && (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK))) &&
+                        (!TextUtils.isEmpty("" + bundle.getInt(INDEX_KEY, 0)))){
                     Intent intent = new Intent();
                     intent.setClass(getContext(), ADActivity.class);
                     intent.putExtra(CURRENT_BANNER_ADVERTISING_LINK,bundle.getString(CURRENT_BANNER_ADVERTISING_LINK));
+                    intent.putExtra(INDEX_KEY,bundle.getInt(INDEX_KEY, 0));
                     startActivity(intent);
                 }
             }

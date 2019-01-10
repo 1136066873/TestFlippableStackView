@@ -24,14 +24,13 @@
             app:round_corner_top_left="16dp"
             app:round_corner_top_right="16dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/pic9"/>
+            /><!--android:src="@mipmap/pic9"-->
 
         <RelativeLayout
             android:layout_width="500dp"
             android:layout_height="40dp"
             android:background="@color/gray_ef"
             android:layout_alignParentBottom="true">
-
 
             <ImageView
                 android:id="@+id/iv_close_ad"
@@ -40,15 +39,8 @@
                 android:background="@mipmap/close"
                 android:layout_centerInParent="true"/>
 
-
         </RelativeLayout>
 
-
     </com.haier.demo.testflippablestackview.helper.imageviewhelper.RCRelativeLayout>
-
-
-
-
-
 
 </LinearLayout>
