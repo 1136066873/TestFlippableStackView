@@ -55,8 +55,11 @@ public class MainActivity extends AppCompatActivity {
 
     class ViewPagerTask implements Runnable {
         public void run() {
-            // TODO Auto-generated method stub
-            currentPosition = (currentPosition + 1 )%Constant.bannerList.length;
+            if ( 0 != currentPosition ){
+                currentPosition = (currentPosition - 1 ) % Constant.bannerList.length;
+            }else {
+                currentPosition = Constant.bannerList.length;
+            }
             handler.obtainMessage().sendToTarget();//获取当前消息 发送给handler
         }
     }
