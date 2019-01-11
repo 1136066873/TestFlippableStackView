@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         createViewPagerFragments();
 
         mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
-        mFlippableStack.initStack(3,StackPageTransformer.Orientation.VERTICAL );
+        mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
         mFlippableStack.setAdapter(mPageAdapter);
 
 
