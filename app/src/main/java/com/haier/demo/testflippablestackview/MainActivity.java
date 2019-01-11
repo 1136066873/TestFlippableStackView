@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //制造数据
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < Constant.bannerList.length; i++) {
             BannerBean bean = new BannerBean("https://image.haier.com/cn/xbsy_37860/sybanner_27044/201812/P020181229474858160551.jpg",
                     "https://www.haier.com/cn/ehaier/");
             mViewPagerFragments.add(CardFragment.newInstance((i + 1),bean.getmCurrentBannerUrl(),bean.getmCurrentBannerAdvertisingLink()));
