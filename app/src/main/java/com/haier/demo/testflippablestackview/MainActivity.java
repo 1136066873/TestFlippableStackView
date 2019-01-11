@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if ( null == executor){
             executor = Executors.newSingleThreadScheduledExecutor();
-            executor.scheduleAtFixedRate(new ViewPagerTask(), 4, 4, TimeUnit.SECONDS);
+            executor.scheduleAtFixedRate(new ViewPagerTask(), 3, 3, TimeUnit.SECONDS);
         }
     }
 
