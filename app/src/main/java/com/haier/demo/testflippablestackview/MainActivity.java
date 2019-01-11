@@ -47,8 +47,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(new ViewPagerTask(), 4, 4, TimeUnit.SECONDS);
+        if ( null == executor){
+            executor = Executors.newSingleThreadScheduledExecutor();
+            executor.scheduleAtFixedRate(new ViewPagerTask(), 4, 4, TimeUnit.SECONDS);
+        }
     }
 
     class ViewPagerTask implements Runnable {
