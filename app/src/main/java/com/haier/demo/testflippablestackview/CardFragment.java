@@ -72,7 +72,7 @@ public class CardFragment extends Fragment {
                 if (bundle != null && (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK))) &&
                         (!TextUtils.isEmpty("" + bundle.getInt(INDEX_KEY, 0)))){
                     Intent intent = new Intent();
-                    intent.setClass(getContext(), ADActivity.class);
+                    intent.setClass(getContext(), WebViewActivity.class);
                     intent.putExtra(CURRENT_BANNER_ADVERTISING_LINK,bundle.getString(CURRENT_BANNER_ADVERTISING_LINK));
                     intent.putExtra(INDEX_KEY,bundle.getInt(INDEX_KEY, 0));
                     startActivity(intent);

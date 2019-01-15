@@ -33,7 +33,8 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"
+            android:hardwareAccelerated="true"/>
 
         <activity android:name=".ADActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
