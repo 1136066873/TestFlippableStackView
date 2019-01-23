@@ -17,6 +17,7 @@
 package com.haier.demo.testflippablestackview;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -62,7 +63,8 @@ public class CardFragment extends Fragment {
         if (bundle != null && (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_URL)))&&
                 (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK))) &&
                 (!TextUtils.isEmpty("" + bundle.getInt(INDEX_KEY, 0)))) {
-            cardIv.setImageResource(Constant.bannerList[bundle.getInt(INDEX_KEY, 0) -1]);
+            //cardIv.setImageResource(Constant.bannerList[bundle.getInt(INDEX_KEY, 0) -1]);
+            cardIv.setImageBitmap(BitmapFactory.decodeFile(bundle.getString(CURRENT_BANNER_URL)));
             tv_index.setText("" + bundle.getInt(INDEX_KEY, 0));
             //Picasso.with(getActivity()).load(bundle.getString(CURRENT_BANNER_URL)).into(cardIv);
         }
