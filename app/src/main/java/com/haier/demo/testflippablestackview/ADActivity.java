@@ -1,8 +1,10 @@
 package com.haier.demo.testflippablestackview;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.haier.demo.testflippablestackview.helper.imageviewhelper.RCImageView;
@@ -16,6 +18,7 @@ public class ADActivity extends AppCompatActivity implements View.OnClickListene
     private static final String INDEX_KEY = "index_key";
     private int index ;
     private RCImageView iv_ad;
+    private static final String CURRENT_BANNER_ADVERTISING_LINK = "current_banner_advertising_link";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,10 +28,9 @@ public class ADActivity extends AppCompatActivity implements View.OnClickListene
         findViewById(R.id.iv_close_ad).setOnClickListener(this);
         iv_ad = findViewById(R.id.iv_ad);
         if (getIntent().getExtras() != null) {
-            int tempIndex = getIntent().getExtras().getInt(INDEX_KEY);
-            if (0 != tempIndex){
-                index = tempIndex;
-                iv_ad.setImageResource(Constant.bannerLinkList[index -1]);
+            String imagePath = getIntent().getExtras().getString(CURRENT_BANNER_ADVERTISING_LINK);
+            if (!TextUtils.isEmpty(imagePath)){
+                iv_ad.setImageBitmap(BitmapFactory.decodeFile(imagePath));
             }
         }
     }
