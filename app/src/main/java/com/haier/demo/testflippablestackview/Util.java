@@ -30,7 +30,7 @@ public class Util {
             }
             File targetFile = new File(pathLocal + "/" + filename);
             OutputStream myOutput = new FileOutputStream(targetFile);
-            myInput = context.getAssets().open("assets.zip");
+            myInput = context.getAssets().open(filename);
             byte[] buffer = new byte[1024];
             int length = myInput.read(buffer);
             while(length > 0)

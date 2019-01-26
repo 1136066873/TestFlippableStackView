@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
@@ -18,14 +17,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.haier.demo.testflippablestackview.helper.viewpagerhelper.FlippableStackView;
 import com.haier.demo.testflippablestackview.helper.viewpagerhelper.StackPageTransformer;
+import com.haier.demo.testflippablestackview.observed.MyBannerObserved;
+import com.haier.demo.testflippablestackview.observed.MyBannerObserver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             mFlippableStack.setCurrentItem(currentPosition,true);
+            Log.e("heguodong","----------------------" + BannerPathManager.getInstance().getDeviceRootDirectory());
+
         }
     };
 
@@ -80,38 +80,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mFlippableStack = findViewById(R.id.flippable_stack_view);
 
+        //添加观察者
+        MyBannerObserved.getInstance().addWatcher(MyBannerObserver.getInstance());
+
         requestPermission();
 
-       mFlippableStack.setOnPageChangeListener(listener);
+        mFlippableStack.setOnPageChangeListener(listener);
 
-/*         //把资产目录下文件推到sd卡中,
-        Util.copyDataFromAssetsToSDcard(this,"/mnt/sdcard/smartspeaker","assets.zip");
-
-        //解压数据并删除zip包
-        try {
-            File file = new File("/mnt/sdcard/smartspeaker/assets.zip");
-            Util.upZipFile(file,"/mnt/sdcard/smartspeaker/banner/");//后期需要遍历这个文件夹
-            boolean isDeleteSuccess = file.delete();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("heguodong","Exception ->" + e.getLocalizedMessage());
-        }*/
-
-
-
-        //初始化数据
-        //createViewPagerFragments();
-
-/*
-        createViewPagerFragmentsBasedOnSdCardData();
+        //frank code
+        createViewPagerFragments();
 
         mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
         mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
         mFlippableStack.setAdapter(mPageAdapter);
-*/
-
-
-
     }
 
     private final int REQUST_PERMISSION_TAG = 1001;
@@ -134,17 +115,31 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUST_PERMISSION_TAG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults != null && grantResults.length > 0 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "用户已授权", Toast.LENGTH_SHORT).show();
 
+                    //MyBannerObserved.getInstance().onAuthorized();
+
                     //把资产目录下文件推到sd卡中,
-                    Util.copyDataFromAssetsToSDcard(this,"/mnt/sdcard/smartspeaker","assets.zip");
+                    Util.copyDataFromAssetsToSDcard(this,
+                            BannerPathManager.getInstance().getBannerRootDirectory(),"banner.zip");
 
                     //解压数据并删除zip包
                     try {
-                        File file = new File("/mnt/sdcard/smartspeaker/assets.zip");
-                        Util.upZipFile(file,"/mnt/sdcard/smartspeaker/banner/");//后期需要遍历这个文件夹
-                        boolean isDeleteSuccess = file.delete();
+                        File file = new File(BannerPathManager.getInstance().getBannerRootDirectory() + "banner.zip");
+                        if (file.exists()){
+                            Util.upZipFile(file, BannerPathManager.getInstance().getBannerRootDirectory());//这行得需要注意：这是把banner.zip 包解压在了 BannerDirectory 目录下
+                            boolean isDeleteSuccess = file.delete();
+                            if (isDeleteSuccess){
+                                Log.i("heguodong","file delete success");
+                            }else {
+                                Log.e("heguodong","file delete failed");
+                            }
+                        }else {
+                            //file do not exist
+                            Log.e("heguodong","file do not exist");
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         Log.e("heguodong","Exception ->" + e.getLocalizedMessage());
@@ -157,7 +152,9 @@ public class MainActivity extends AppCompatActivity {
                     mFlippableStack.setAdapter(mPageAdapter);
 
                 } else {
-                    requestPermission();
+//                    MyBannerObserved.getInstance().onNotAuthorized();
+//                    Toast.makeText(this, "用户未授权", Toast.LENGTH_SHORT).show();
+//                    requestPermission();
                 }
             }
         }
@@ -167,14 +164,14 @@ public class MainActivity extends AppCompatActivity {
         try {
             mViewPagerFragments = new ArrayList<>();
             Gson gson = new Gson();
-            Reader reader = new FileReader("/mnt/sdcard/smartspeaker/banner/banner/json.json");
+            Reader reader = new FileReader(BannerPathManager.getInstance().getBannerJsonFilePath());//注意，json 文件名字与后台约定好保持不变
             MyBannerBean bannerBean = gson.fromJson(reader,MyBannerBean.class);
 
             //制造数据
             for (int i = 0; i < bannerBean.getBannerItems().size(); i++) {
                 mViewPagerFragments.add(CardFragment.newInstance((i + 1),
-                        "/mnt/sdcard/smartspeaker/banner/banner/banner/" + bannerBean.getBannerItems().get(i).getBannerPicPath(),
-                        "/mnt/sdcard/smartspeaker/banner/banner/banner_link/" + bannerBean.getBannerItems().get(i).getBannerADResourcePath()));
+                        BannerPathManager.getInstance().getBannerImageDirectory() + bannerBean.getBannerItems().get(i).getBannerPicPath(),
+                        BannerPathManager.getInstance().getBannerAdvertisingResourcesDirectory() + bannerBean.getBannerItems().get(i).getBannerADResourcePath()));
             }
 
         } catch (FileNotFoundException e) {

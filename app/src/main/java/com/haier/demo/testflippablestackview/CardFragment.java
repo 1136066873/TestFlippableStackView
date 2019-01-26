@@ -27,10 +27,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.haier.demo.testflippablestackview.helper.imageviewhelper.RCImageView;
-import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 /**
  * Created by Bartosz Lipinski
@@ -63,8 +63,13 @@ public class CardFragment extends Fragment {
         if (bundle != null && (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_URL)))&&
                 (!TextUtils.isEmpty(bundle.getString(CURRENT_BANNER_ADVERTISING_LINK))) &&
                 (!TextUtils.isEmpty("" + bundle.getInt(INDEX_KEY, 0)))) {
-            //cardIv.setImageResource(Constant.bannerList[bundle.getInt(INDEX_KEY, 0) -1]);
-            cardIv.setImageBitmap(BitmapFactory.decodeFile(bundle.getString(CURRENT_BANNER_URL)));
+
+            if (!(new File(BannerPathManager.getInstance().getBannerDirectory() )).exists()){
+                cardIv.setImageResource(Constant.bannerList[bundle.getInt(INDEX_KEY, 0) -1]);
+            }else {
+                cardIv.setImageBitmap(BitmapFactory.decodeFile(bundle.getString(CURRENT_BANNER_URL)));
+            }
+
             tv_index.setText("" + bundle.getInt(INDEX_KEY, 0));
             //Picasso.with(getActivity()).load(bundle.getString(CURRENT_BANNER_URL)).into(cardIv);
         }
