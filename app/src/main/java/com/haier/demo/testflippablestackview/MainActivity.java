@@ -116,19 +116,19 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUST_PERMISSION_TAG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (grantResults != null && grantResults.length > 0 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "用户已授权", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "用户已授权该应用访问 SD 卡", Toast.LENGTH_SHORT).show();
 
                     //MyBannerObserved.getInstance().onAuthorized();
 
                     //把资产目录下文件推到sd卡中,
                     Util.copyDataFromAssetsToSDcard(this,
-                            BannerPathManager.getInstance().getBannerRootDirectory(),"banner.zip");
+                            BannerPathManager.getInstance().getBannerRootDirectory(),"banner_assets.zip");
 
                     //解压数据并删除zip包
                     try {
-                        File file = new File(BannerPathManager.getInstance().getBannerRootDirectory() + "banner.zip");
+                        File file = new File(BannerPathManager.getInstance().getBannerRootDirectory() + "banner_assets.zip");
                         if (file.exists()){
-                            Util.upZipFile(file, BannerPathManager.getInstance().getBannerRootDirectory());//这行得需要注意：这是把banner.zip 包解压在了 BannerDirectory 目录下
+                            Util.upZipFile(file,BannerPathManager.getInstance().getBannerRootDirectory() );//这行得需要注意：这是把 banner_assets.zip 包解压在了 BannerRootDirectory 目录下
                             boolean isDeleteSuccess = file.delete();
                             if (isDeleteSuccess){
                                 Log.i("heguodong","file delete success");
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
 //                    MyBannerObserved.getInstance().onNotAuthorized();
-//                    Toast.makeText(this, "用户未授权", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "用户未授权该应用访问 SD 卡", Toast.LENGTH_SHORT).show();
 //                    requestPermission();
                 }
             }

@@ -28,7 +28,7 @@ public class Util {
             if (!file.exists()){
                 file.mkdir();
             }
-            File targetFile = new File(pathLocal + "/" + filename);
+            File targetFile = new File(pathLocal + filename);
             OutputStream myOutput = new FileOutputStream(targetFile);
             myInput = context.getAssets().open(filename);
             byte[] buffer = new byte[1024];
