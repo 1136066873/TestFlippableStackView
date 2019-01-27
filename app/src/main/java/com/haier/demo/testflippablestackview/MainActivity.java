@@ -87,12 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         mFlippableStack.setOnPageChangeListener(listener);
 
-        //frank code
-        createViewPagerFragments();
-
-        mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
-        mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
-        mFlippableStack.setAdapter(mPageAdapter);
     }
 
     private final int REQUST_PERMISSION_TAG = 1001;
@@ -104,10 +98,9 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.INTERNET,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
             }, REQUST_PERMISSION_TAG);
-        }else {
-            //TODO:说明用户之前已经授权应用访问网络和访问sd卡，这个地方的逻辑该怎么写呢？
+        } else {
+            //TODO:说明用户之前已经授权应用访问网络和访问sd卡
             createViewPagerFragmentsBasedOnSdCardData();
-
             mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
             mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
             mFlippableStack.setAdapter(mPageAdapter);
@@ -157,8 +150,12 @@ public class MainActivity extends AppCompatActivity {
                     mFlippableStack.setAdapter(mPageAdapter);
 
                 } else {
-//                    MyBannerObserved.getInstance().onNotAuthorized();
                     Toast.makeText(this, "用户未授权该应用访问 SD 卡", Toast.LENGTH_SHORT).show();
+                    createViewPagerFragments();
+                    mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
+                    mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
+                    mFlippableStack.setAdapter(mPageAdapter);
+//                    MyBannerObserved.getInstance().onNotAuthorized();
 //                    requestPermission();
                 }
             }
