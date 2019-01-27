@@ -80,8 +80,11 @@ public class CardFragment extends Fragment {
                         (!TextUtils.isEmpty("" + bundle.getInt(INDEX_KEY, 0)))){
                     Intent intent = new Intent();
                     intent.setClass(getContext(), ADActivity.class);
-                    intent.putExtra(CURRENT_BANNER_ADVERTISING_LINK,bundle.getString(CURRENT_BANNER_URL));
-                    intent.putExtra(INDEX_KEY,bundle.getInt(INDEX_KEY, 0));
+                    if (!(new File(BannerPathManager.getInstance().getBannerDirectory() )).exists()){
+                        intent.putExtra(INDEX_KEY,bundle.getInt(INDEX_KEY, 0));
+                    }else {
+                        intent.putExtra(CURRENT_BANNER_ADVERTISING_LINK,bundle.getString(CURRENT_BANNER_URL));
+                    }
                     startActivity(intent);
                 }
             }

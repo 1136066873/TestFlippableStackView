@@ -29,8 +29,12 @@ public class ADActivity extends AppCompatActivity implements View.OnClickListene
         iv_ad = findViewById(R.id.iv_ad);
         if (getIntent().getExtras() != null) {
             String imagePath = getIntent().getExtras().getString(CURRENT_BANNER_ADVERTISING_LINK);
+            int tempIndex = getIntent().getExtras().getInt(INDEX_KEY);
             if (!TextUtils.isEmpty(imagePath)){
                 iv_ad.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+            }else if (0 != tempIndex){
+                index = tempIndex;
+                iv_ad.setImageResource(Constant.bannerLinkList[index -1]);
             }
         }
     }
