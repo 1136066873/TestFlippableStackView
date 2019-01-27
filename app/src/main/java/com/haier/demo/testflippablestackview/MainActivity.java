@@ -99,14 +99,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void requestPermission() {
         if (checkSelfPermission(Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED ||
-                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED ||
-                checkSelfPermission(Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS) == PackageManager.PERMISSION_DENIED
-                ) {
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.INTERNET,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
             }, REQUST_PERMISSION_TAG);
+        }else {
+            //TODO:说明用户之前已经授权应用访问网络和访问sd卡，这个地方的逻辑该怎么写呢？
+            createViewPagerFragmentsBasedOnSdCardData();
+
+            mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
+            mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
+            mFlippableStack.setAdapter(mPageAdapter);
         }
     }
 
@@ -115,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUST_PERMISSION_TAG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (grantResults != null && grantResults.length > 0 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "用户已授权该应用访问 SD 卡", Toast.LENGTH_SHORT).show();
 
                     //MyBannerObserved.getInstance().onAuthorized();
