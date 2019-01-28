@@ -80,13 +80,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mFlippableStack = findViewById(R.id.flippable_stack_view);
 
-        //添加观察者
+        //init default views.
+        initDefaultViews();
+
+        //add watcher.
         MyBannerObserved.getInstance().addWatcher(MyBannerObserver.getInstance());
 
         requestPermission();
 
         mFlippableStack.setOnPageChangeListener(listener);
 
+    }
+
+    private void initDefaultViews() {
+        createViewPagerFragments();
+        mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
+        mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
+        mFlippableStack.setAdapter(mPageAdapter);
+    }
+
+    private void initViewsAccordingDataInSDCard(){
+        createViewPagerFragmentsBasedOnSdCardData();
+        mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
+        mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
+        mFlippableStack.setAdapter(mPageAdapter);
     }
 
     private final int REQUST_PERMISSION_TAG = 1001;
@@ -100,10 +117,7 @@ public class MainActivity extends AppCompatActivity {
             }, REQUST_PERMISSION_TAG);
         } else {
             //TODO:说明用户之前已经授权应用访问网络和访问sd卡
-            createViewPagerFragmentsBasedOnSdCardData();
-            mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
-            mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
-            mFlippableStack.setAdapter(mPageAdapter);
+            initViewsAccordingDataInSDCard();
         }
     }
 
@@ -143,18 +157,11 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("heguodong","Exception ->" + e.getLocalizedMessage());
                     }
 
-                    createViewPagerFragmentsBasedOnSdCardData();
-
-                    mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
-                    mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
-                    mFlippableStack.setAdapter(mPageAdapter);
+                    initViewsAccordingDataInSDCard();
 
                 } else {
                     Toast.makeText(this, "用户未授权该应用访问 SD 卡", Toast.LENGTH_SHORT).show();
-                    createViewPagerFragments();
-                    mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
-                    mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
-                    mFlippableStack.setAdapter(mPageAdapter);
+
 //                    MyBannerObserved.getInstance().onNotAuthorized();
 //                    requestPermission();
                 }
