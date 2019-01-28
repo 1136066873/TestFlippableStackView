@@ -1,6 +1,7 @@
 package com.haier.demo.testflippablestackview;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFlippableStack = findViewById(R.id.flippable_stack_view);
+        mFlippableStack.setOnPageChangeListener(listener);
 
         //init default views.
         initDefaultViews();
@@ -89,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
         MyBannerObserved.getInstance().addWatcher(MyBannerObserver.getInstance());
 
         requestPermission();
-
-        mFlippableStack.setOnPageChangeListener(listener);
 
     }
 
@@ -135,49 +135,8 @@ public class MainActivity extends AppCompatActivity {
                     //MyBannerObserved.getInstance().onAuthorized();
 
                     //把资产目录下文件推到sd卡中,
-                    Util.copyDataFromAssetsToSDcard(this,
-                            BannerPathManager.getInstance().getBannerRootDirectory(), "banner_assets.zip",
-                            new CallBackWhenCopyDataFromAssetsToSDcard() {
-                                @Override
-                                public void onCopyDataFailed(String msg) {
-                                    Log.e(TAG,"onCopyDataFailed,msg is ->" + msg);
-                                }
+                    copyData(this);
 
-                                @Override
-                                public void onCopyDataSuccessful() {
-                                    Log.i(TAG,"onCopyDataSuccessful.");
-
-                                }
-                            });
-
-                    //解压数据并删除zip包
-                    final File file = new File(BannerPathManager.getInstance().getBannerRootDirectory() + "banner_assets.zip");
-                    if (file.exists()){
-                        Util.upZipFile(file, BannerPathManager.getInstance().getBannerRootDirectory(), new CallBackWhenUpZipFile() {
-                            @Override
-                            public void onUpZipFileFailed(String msg) {
-                                Log.e(TAG,"onUpZipFileFailed,msg is ->" + msg);
-                            }
-
-                            @Override
-                            public void onUpZipFileSuccessful() {
-                                Log.i(TAG,"onUpZipFileSuccessful.");
-                                if (file.exists()){
-                                    boolean isDeleteSuccess = file.delete();
-                                    if (isDeleteSuccess){
-                                        Log.i(TAG, "file delete success");
-                                    } else {
-                                        Log.e(TAG, "file delete failed");
-                                    }
-                                    initViewsAccordingDataInSDCard();
-                                }
-                            }
-                        });//这行得需要注意：这是把 banner_assets.zip 包解压在了 BannerRootDirectory 目录下
-
-                    } else {
-                        //file do not exist
-                        Log.e(TAG, "file do not exist");
-                    }
                 } else {
                     Toast.makeText(this, "用户未授权该应用访问 SD 卡", Toast.LENGTH_SHORT).show();
 
@@ -185,6 +144,55 @@ public class MainActivity extends AppCompatActivity {
 //                    requestPermission();
                 }
             }
+        }
+    }
+
+    private void copyData(Context context) {
+        Util.copyDataFromAssetsToSDcard(context,
+                BannerPathManager.getInstance().getBannerRootDirectory(), "banner_assets.zip",
+                new CallBackWhenCopyDataFromAssetsToSDcard() {
+                    @Override
+                    public void onCopyDataFailed(String msg) {
+                        //Do Nothing.
+                        Log.e(TAG,"onCopyDataFailed,msg is ->" + msg);
+                    }
+
+                    @Override
+                    public void onCopyDataSuccessful() {
+                        Log.i(TAG,"onCopyDataSuccessful.");
+                        unZipFile();
+                    }
+                });
+    }
+
+    private void unZipFile() {
+        //解压数据并删除zip包
+        final File file = new File(BannerPathManager.getInstance().getBannerRootDirectory() + "banner_assets.zip");
+        if (file.exists()){
+            Util.upZipFile(file, BannerPathManager.getInstance().getBannerRootDirectory(), new CallBackWhenUpZipFile() {
+                @Override
+                public void onUpZipFileFailed(String msg) {
+                    Log.e(TAG,"onUpZipFileFailed,msg is ->" + msg);
+                }
+
+                @Override
+                public void onUpZipFileSuccessful() {
+                    Log.i(TAG,"onUpZipFileSuccessful.");
+                    if (file.exists()){
+                        boolean isDeleteSuccess = file.delete();
+                        if (isDeleteSuccess){
+                            Log.i(TAG, "file delete success");
+                        } else {
+                            Log.e(TAG, "file delete failed");
+                        }
+                        initViewsAccordingDataInSDCard();
+                    }
+                }
+            });//这行得需要注意：这是把 banner_assets.zip 包解压在了 BannerRootDirectory 目录下
+
+        } else {
+            //file do not exist
+            Log.e(TAG, "Zip file do not exist");
         }
     }
 
