@@ -21,7 +21,10 @@ import java.util.zip.ZipFile;
 
 public class Util {
 
-    public static void copyDataFromAssetsToSDcard(Context context,String pathLocal,String filename) {
+    public static final String TAG = "Util";
+
+    public static void copyDataFromAssetsToSDcard(Context context,String pathLocal,String filename,
+                                                  CallBackWhenCopyDataFromAssetsToSDcard callback) {
         try {
             InputStream myInput;
             File file = new File(pathLocal);
@@ -42,9 +45,11 @@ public class Util {
             myOutput.flush();
             myInput.close();
             myOutput.close();
+            callback.onCopyDataSuccessful();
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("heguodong","Exception ->" + e.getLocalizedMessage());
+            Log.e(TAG,"Exception ->" + e.getLocalizedMessage());
+            callback.onCopyDataFailed(e.getLocalizedMessage());
         }
     }
 
@@ -54,37 +59,43 @@ public class Util {
       *
       * @throws Exception
       */
-     public static int upZipFile(File zipFile, String folderPath)throws ZipException,IOException {
+     public static void upZipFile(File zipFile, String folderPath,CallBackWhenUpZipFile callback){
 
-         ZipFile zfile=new ZipFile(zipFile);
-         Enumeration zList=zfile.entries();
-         ZipEntry ze=null;
-         byte[] buf=new byte[1024];
-         while(zList.hasMoreElements()){
-             ze=(ZipEntry)zList.nextElement();
-             if(ze.isDirectory()){
+         try {
+             ZipFile zfile=new ZipFile(zipFile);
+             Enumeration zList=zfile.entries();
+             ZipEntry ze=null;
+             byte[] buf=new byte[1024];
+             while(zList.hasMoreElements()){
+                 ze=(ZipEntry)zList.nextElement();
+                 if(ze.isDirectory()){
+                     Log.d("upZipFile", "ze.getName() = "+ze.getName());
+                     String dirstr = folderPath + ze.getName();
+                     //dirstr.trim();
+                     dirstr = new String(dirstr.getBytes("8859_1"), "GB2312");
+                     Log.d("upZipFile", "str = "+dirstr);
+                     File f=new File(dirstr);
+                     f.mkdir();
+                     continue;
+                 }
                  Log.d("upZipFile", "ze.getName() = "+ze.getName());
-                 String dirstr = folderPath + ze.getName();
-                 //dirstr.trim();
-                 dirstr = new String(dirstr.getBytes("8859_1"), "GB2312");
-                 Log.d("upZipFile", "str = "+dirstr);
-                 File f=new File(dirstr);
-                 f.mkdir();
-                 continue;
+                 OutputStream os = new BufferedOutputStream(new FileOutputStream(getRealFileName(folderPath, ze.getName())));
+                 InputStream is = new BufferedInputStream(zfile.getInputStream(ze));
+                 int readLen=0;
+                 while ((readLen=is.read(buf, 0, 1024))!=-1) {
+                     os.write(buf, 0, readLen);
+                 }
+                 is.close();
+                 os.close();
              }
-             Log.d("upZipFile", "ze.getName() = "+ze.getName());
-             OutputStream os = new BufferedOutputStream(new FileOutputStream(getRealFileName(folderPath, ze.getName())));
-             InputStream is = new BufferedInputStream(zfile.getInputStream(ze));
-             int readLen=0;
-             while ((readLen=is.read(buf, 0, 1024))!=-1) {
-                 os.write(buf, 0, readLen);
-             }
-             is.close();
-             os.close();
+             zfile.close();
+             Log.d("upZipFile", "finishssssssssssssssssssss");
+             callback.onUpZipFileSuccessful();
+         } catch (IOException e) {
+             e.printStackTrace();
+             Log.e(TAG,"IOException ->" + e.getLocalizedMessage());
+             callback.onUpZipFileFailed(e.getLocalizedMessage());
          }
-         zfile.close();
-         Log.d("upZipFile", "finishssssssssssssssssssss");
-         return 0;
      }
 
 

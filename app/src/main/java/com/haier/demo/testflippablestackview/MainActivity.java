@@ -42,13 +42,15 @@ public class MainActivity extends AppCompatActivity {
     private ScheduledExecutorService executor;
 
     private int currentPosition;
+    
+    public static final String TAG = "heguodong";
 
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             mFlippableStack.setCurrentItem(currentPosition,true);
-            Log.e("heguodong","----------------------" + BannerPathManager.getInstance().getDeviceRootDirectory());
+            Log.e(TAG,"----------------------" + BannerPathManager.getInstance().getDeviceRootDirectory());
 
         }
     };
@@ -134,31 +136,48 @@ public class MainActivity extends AppCompatActivity {
 
                     //把资产目录下文件推到sd卡中,
                     Util.copyDataFromAssetsToSDcard(this,
-                            BannerPathManager.getInstance().getBannerRootDirectory(),"banner_assets.zip");
+                            BannerPathManager.getInstance().getBannerRootDirectory(), "banner_assets.zip",
+                            new CallBackWhenCopyDataFromAssetsToSDcard() {
+                                @Override
+                                public void onCopyDataFailed(String msg) {
+                                    Log.e(TAG,"onCopyDataFailed,msg is ->" + msg);
+                                }
+
+                                @Override
+                                public void onCopyDataSuccessful() {
+                                    Log.i(TAG,"onCopyDataSuccessful.");
+
+                                }
+                            });
 
                     //解压数据并删除zip包
-                    try {
-                        File file = new File(BannerPathManager.getInstance().getBannerRootDirectory() + "banner_assets.zip");
-                        if (file.exists()){
-                            Util.upZipFile(file,BannerPathManager.getInstance().getBannerRootDirectory() );//这行得需要注意：这是把 banner_assets.zip 包解压在了 BannerRootDirectory 目录下
-                            boolean isDeleteSuccess = file.delete();
-                            if (isDeleteSuccess){
-                                Log.i("heguodong","file delete success");
-                            }else {
-                                Log.e("heguodong","file delete failed");
+                    final File file = new File(BannerPathManager.getInstance().getBannerRootDirectory() + "banner_assets.zip");
+                    if (file.exists()){
+                        Util.upZipFile(file, BannerPathManager.getInstance().getBannerRootDirectory(), new CallBackWhenUpZipFile() {
+                            @Override
+                            public void onUpZipFileFailed(String msg) {
+                                Log.e(TAG,"onUpZipFileFailed,msg is ->" + msg);
                             }
-                        }else {
-                            //file do not exist
-                            Log.e("heguodong","file do not exist");
-                        }
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.e("heguodong","Exception ->" + e.getLocalizedMessage());
+                            @Override
+                            public void onUpZipFileSuccessful() {
+                                Log.i(TAG,"onUpZipFileSuccessful.");
+                                if (file.exists()){
+                                    boolean isDeleteSuccess = file.delete();
+                                    if (isDeleteSuccess){
+                                        Log.i(TAG, "file delete success");
+                                    } else {
+                                        Log.e(TAG, "file delete failed");
+                                    }
+                                    initViewsAccordingDataInSDCard();
+                                }
+                            }
+                        });//这行得需要注意：这是把 banner_assets.zip 包解压在了 BannerRootDirectory 目录下
+
+                    } else {
+                        //file do not exist
+                        Log.e(TAG, "file do not exist");
                     }
-
-                    initViewsAccordingDataInSDCard();
-
                 } else {
                     Toast.makeText(this, "用户未授权该应用访问 SD 卡", Toast.LENGTH_SHORT).show();
 
