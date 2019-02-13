@@ -92,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
 
         requestPermission();
 
+
+/*        BannerSharedPreferences.getSingleInstance().putBannerVersion("0001");
+        Object object = BannerSharedPreferences.getSingleInstance().getBannerVersion();
+        Log.e("heguodong","------------------------------------" + object);*/
     }
 
     private void initDefaultViews() {
