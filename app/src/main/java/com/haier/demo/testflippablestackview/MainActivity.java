@@ -125,7 +125,8 @@ public class MainActivity extends AppCompatActivity {
             }, REQUST_PERMISSION_TAG);
         } else {
             //TODO:说明用户之前已经授权应用访问网络和访问sd卡
-            initViewsAccordingDataInSDCard();
+            //initViewsAccordingDataInSDCard();
+            BannerViewManager.getSingleInstance().updateBannerView(MainActivity.this,mFlippableStack);
         }
     }
 
@@ -204,7 +205,8 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Log.e(TAG, "file delete failed");
                         }
-                        initViewsAccordingDataInSDCard();
+                        //initViewsAccordingDataInSDCard();
+                        BannerViewManager.getSingleInstance().updateBannerView(MainActivity.this,mFlippableStack);
                     }
                 }
             });//这行得需要注意：这是把 banner_assets.zip 包解压在了 BannerRootDirectory 目录下
