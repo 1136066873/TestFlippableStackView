@@ -182,6 +182,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onUpZipFileSuccessful() {
                     Log.i(TAG,"onUpZipFileSuccessful.");
+                    //解压zip 包成功即认为最新版本的banner文件夹在本地SD卡上建立了，这个地方把最新的版本信息写入到 SP 存储中
+                    BannerSharedPreferences.getSingleInstance().putBannerVersion("0002");
+                    Object object = BannerSharedPreferences.getSingleInstance().getBannerVersion();
+                    Log.e("heguodong", "BannerVersion ----------" + object);
                     if (file.exists()){
                         boolean isDeleteSuccess = file.delete();
                         if (isDeleteSuccess){

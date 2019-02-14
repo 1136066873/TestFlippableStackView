@@ -39,7 +39,9 @@ public class BannerPathManager {
     }
 
     public String getBannerDirectory(){
-        return getBannerRootDirectory() + Constant.bannerFolderName + File.separator ;
+        //return getBannerRootDirectory() + Constant.bannerFolderName + File.separator ;
+        //BannerSharedPreferences.getSingleInstance().getBannerVersion()
+        return getBannerRootDirectory() + BannerSharedPreferences.getSingleInstance().getBannerVersion() + File.separator ;
     }
 
     public String getBannerJsonFilePath(){
