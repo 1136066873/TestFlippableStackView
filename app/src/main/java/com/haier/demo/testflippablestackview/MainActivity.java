@@ -107,13 +107,6 @@ public class MainActivity extends AppCompatActivity {
         mFlippableStack.setAdapter(mPageAdapter);
     }
 
-    private void initViewsAccordingDataInSDCard(){
-        createViewPagerFragmentsBasedOnSdCardData();
-        mPageAdapter = new CardFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
-        mFlippableStack.initStack(2,StackPageTransformer.Orientation.VERTICAL );
-        mFlippableStack.setAdapter(mPageAdapter);
-    }
-
     private final int REQUST_PERMISSION_TAG = 1001;
 
     private void requestPermission() {
@@ -217,26 +210,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void createViewPagerFragmentsBasedOnSdCardData() {
-        try {
-            mViewPagerFragments = new ArrayList<>();
-            Gson gson = new Gson();
-            Reader reader = new FileReader(BannerPathManager.getInstance().getBannerJsonFilePath());//注意，json 文件名字与后台约定好保持不变
-            MyBannerBean bannerBean = gson.fromJson(reader,MyBannerBean.class);
-
-            //制造数据
-            for (int i = 0; i < bannerBean.getBannerItems().size(); i++) {
-                mViewPagerFragments.add(CardFragment.newInstance((i + 1),
-                        BannerPathManager.getInstance().getBannerImageDirectory() + bannerBean.getBannerItems().get(i).getBannerPicPath(),
-                        BannerPathManager.getInstance().getBannerAdvertisingResourcesDirectory() + bannerBean.getBannerItems().get(i).getBannerADResourcePath()));
-            }
-
-        } catch (FileNotFoundException e) {
-            Toast.makeText(this, "FileNotFoundException", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }
-
     ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -254,8 +227,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
-
-
 
     private void createViewPagerFragments() {
         mViewPagerFragments = new ArrayList<>();
