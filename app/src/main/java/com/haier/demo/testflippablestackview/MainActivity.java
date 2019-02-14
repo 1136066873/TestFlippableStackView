@@ -2,6 +2,7 @@ package com.haier.demo.testflippablestackview;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -182,10 +184,19 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onUpZipFileSuccessful() {
                     Log.i(TAG,"onUpZipFileSuccessful.");
-                    //解压zip 包成功即认为最新版本的banner文件夹在本地SD卡上建立了，这个地方把最新的版本信息写入到 SP 存储中
+                    //发送广播出去，用来通知、关闭关闭掉其他正在加载旧资源的组件
+                    //sendBroadcast(new Intent("现在已经解压文件成功，需要关闭不必要的窗口"));
+
+                    //删除旧的banner 文件夾资源
+                    String oldBannerVersionCode = BannerSharedPreferences.getSingleInstance().getBannerVersion();
+                    if (!TextUtils.isEmpty(oldBannerVersionCode)){
+                        BannerAssetsManager.getSingleInstance().deleteOldAssetsFolder(oldBannerVersionCode);
+                    }
+
+                    //使用新的banner 资源：解压zip 包成功即认为最新版本的banner文件夹在本地SD卡上建立了，这个地方把最新的版本信息写入到 SP 存储中
                     BannerSharedPreferences.getSingleInstance().putBannerVersion("0002");
-                    Object object = BannerSharedPreferences.getSingleInstance().getBannerVersion();
-                    Log.e("heguodong", "BannerVersion ----------" + object);
+                    String newBannerVersionCode = BannerSharedPreferences.getSingleInstance().getBannerVersion();
+                    Log.e("heguodong", "BannerVersion ----------" + newBannerVersionCode);
                     if (file.exists()){
                         boolean isDeleteSuccess = file.delete();
                         if (isDeleteSuccess){
