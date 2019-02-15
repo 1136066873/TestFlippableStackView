@@ -36,6 +36,9 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
+    String[] PERMISSIONS =  new String[]{Manifest.permission.INTERNET,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     private FlippableStackView mFlippableStack;
 
     private CardFragmentAdapter mPageAdapter;
@@ -110,13 +113,10 @@ public class MainActivity extends AppCompatActivity {
     private final int REQUST_PERMISSION_TAG = 1001;
 
     private void requestPermission() {
-        if (checkSelfPermission(Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED ||
-                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            }, REQUST_PERMISSION_TAG);
-        } else {
+        PermissionsChecker permissionsChecker = new PermissionsChecker(this);
+        if (permissionsChecker.lacksPermissions(PERMISSIONS)){
+            ActivityCompat.requestPermissions(this,PERMISSIONS,REQUST_PERMISSION_TAG);
+        }else {
             //TODO:说明用户之前已经授权应用访问网络和访问sd卡
             //initViewsAccordingDataInSDCard();
             BannerViewManager.getSingleInstance().updateBannerView(MainActivity.this,mFlippableStack);
