@@ -148,21 +148,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void copyData(Context context) {
-        Util.copyDataFromAssetsToSDcard(context,
-                BannerPathManager.getInstance().getBannerRootDirectory(), "banner_assets.zip",
-                new CallBackWhenCopyDataFromAssetsToSDcard() {
-                    @Override
-                    public void onCopyDataFailed(String msg) {
-                        //Do Nothing.
-                        Log.e(TAG,"onCopyDataFailed,msg is ->" + msg);
-                    }
+        final File jsonFile = new File(BannerPathManager.getInstance().getBannerDirectory());
+        if (!jsonFile.exists()){
+            //copy zip to sdcard(when in Production: begin check and download zip file)
+            Util.copyDataFromAssetsToSDcard(context,
+                    BannerPathManager.getInstance().getBannerRootDirectory(), "banner_assets.zip",
+                    new CallBackWhenCopyDataFromAssetsToSDcard() {
+                        @Override
+                        public void onCopyDataFailed(String msg) {
+                            //Do Nothing.
+                            Log.e(TAG,"onCopyDataFailed,msg is ->" + msg);
+                        }
 
-                    @Override
-                    public void onCopyDataSuccessful() {
-                        Log.i(TAG,"onCopyDataSuccessful.");
-                        unZipFile();
-                    }
-                });
+                        @Override
+                        public void onCopyDataSuccessful() {
+                            Log.i(TAG,"onCopyDataSuccessful.");
+                            unZipFile();
+                        }
+                    });
+        }else {
+            //TODO:说明 Zip 包在此之前已经被拷贝到 sd卡
+            //load assets from sdcard
+            BannerViewManager.getSingleInstance().updateBannerView(MainActivity.this,mFlippableStack);
+        }
+
     }
 
     private void unZipFile() {
